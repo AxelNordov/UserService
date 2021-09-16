@@ -1,7 +1,6 @@
 package com.example.userservicetest.controller;
 
 import com.example.userservicetest.service.UserGroupService;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ public class UserGroupController implements UserGroupControllerApi {
     UserGroupService userGroupService;
 
     @Override
-    public ResponseEntity<List<UserGroupDto>> getAllUserGroups() {
+    public ResponseEntity<List<UserGroupDto>> getUserGroups() {
         UserGroupDto userGroupDto = userGroupService.getUserGroup();
         System.out.println(userGroupDto);
         return ResponseEntity.ok(List.of());

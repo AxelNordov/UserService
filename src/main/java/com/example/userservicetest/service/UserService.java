@@ -1,15 +1,16 @@
 package com.example.userservicetest.service;
 
 import com.example.userservicetest.entity.User;
-import com.example.userservicetest.entity.UserGroup;
 import com.example.userservicetest.mapper.UserMapper;
 import com.example.userservicetest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import package_com.example.userservicetest.model.UserDto;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -20,21 +21,33 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public UserDto getUser() {
-        UserGroup userGroup = UserGroup.builder()
-                .name("guest!!")
-                .uuid(UUID.randomUUID().toString())
-                .build();
-        User user = User.builder()
-                .uuid(UUID.randomUUID().toString())
-                .userGroups(List.of(userGroup,userGroup))
-                .build();
-
-        return userMapper.userToUserDto(user);
+    public List<UserDto> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(user -> userMapper.userToUserDto(user))
+                .collect(Collectors.toList());
     }
 
-    public User addUser(UserDto userDto) {
-        return userRepository.save(userMapper.userDtoToUser(userDto));
+    public UserDto getUserById(String id) {
+        return userMapper.userToUserDto(userRepository.findById(id).get());
     }
 
+    public UserDto createUser(UserDto userDto) {
+        User entity = userMapper.userDtoToUser(userDto);
+        System.out.println(entity);
+        return userMapper.userToUserDto(
+                userRepository.save(entity));
+    }
+
+    public UserDto updateUser(String id, UserDto userDto) {
+        userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        userDto.setUuid(UUID.fromString(id));
+        userRepository.save(userMapper.userDtoToUser(userDto));
+        return userMapper.userToUserDto(userRepository.findById(id).get());
+    }
+
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
+    }
 }
