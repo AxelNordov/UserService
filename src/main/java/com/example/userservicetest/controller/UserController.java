@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Api(value = "UserController", description = "the UserController!!!! API")
+//@Api(value = "UserController", description = "the UserController!!!! API")
 public class UserController implements UserControllerApi {
     @Autowired
     UserService userService;

@@ -7,6 +7,8 @@ import package_com.example.userservicetest.model.UserDto;
 @Mapper(componentModel = "spring", uses = {UserGroupMapper.class})
 public interface UserMapper {
 
-    UserDto userUserDto(User user);
+    UserDto userToUserDto(User user);
+
+    User userDtoToUser(UserDto userDto);
 
 }

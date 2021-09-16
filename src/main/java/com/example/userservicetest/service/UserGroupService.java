@@ -2,7 +2,6 @@ package com.example.userservicetest.service;
 
 import com.example.userservicetest.entity.UserGroup;
 import com.example.userservicetest.mapper.UserGroupMapper;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import package_com.example.userservicetest.model.UserGroupDto;
@@ -21,9 +20,7 @@ public class UserGroupService {
                 .uuid(UUID.randomUUID().toString())
                 .build();
 
-        System.out.println("hello");
-
-        return userGroupMapper.userGroupUserGroupDto(userGroup);
+        return userGroupMapper.userGroupToUserGroupDto(userGroup);
     }
 
 }

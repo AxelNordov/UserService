@@ -24,9 +24,9 @@ paths:
                   $ref: '#/components/schemas/User'
           description: successful response
     post:
-      summary: List All users
+      summary: api/v1/users post sumary
       operationId: addUser
-      description: Gets a list of all `user` entities.
+      description: Add new `user` entity.
       tags:
         - user-controller
       responses:
@@ -60,10 +60,6 @@ paths:
                 $ref: "#/components/schemas/User"
         default:
           description: An unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
     put:
       summary: A sample get endpoint
       operationId: updateUser
@@ -85,10 +81,6 @@ paths:
                 $ref: "#/components/schemas/Response"
         default:
           description: An unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
     delete:
       summary: A sample get endpoint
       operationId: deleteUser
@@ -106,17 +98,13 @@ paths:
           description: An expected response
         default:
           description: An unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
   /api/v1/userGroups:
     get:
       summary: List All userGroups
       operationId: getAllUserGroups
       description: Gets a list of all `userGroup` entities.
       tags:
-        - userGroup-controller
+        - user-group-controller
       responses:
         '200':
           content:
@@ -164,14 +152,4 @@ components:
         - attr
       properties:
         attr:
-          type: string
-    Error:
-      required:
-        - httpCode
-        - errorMessage
-      properties:
-        httpCode:
-          type: integer
-          format: int32
-        errorMessage:
           type: string
