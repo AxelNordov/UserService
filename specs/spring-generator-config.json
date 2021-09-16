@@ -1,0 +1,10 @@
+{
+  "library": "spring-boot",
+  "basePackage": "package com.example.userservicetest",
+  "apiPackage": "package com.example.userservicetest.api",
+  "modelPackage": "package com.example.userservicetest.model",
+  "configPackage": "package com.example.userservicetest.config",
+  "modelNameSuffix": "Dto",
+  "interfaceOnly": true,
+  "useTags": true
+}

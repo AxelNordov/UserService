@@ -1,0 +1,92 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4'
+    implementation 'org.springframework.data:spring-data-commons:2.5.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
+
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
+
+//    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+//    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
+//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+//    implementation 'org.openapitools:openapi-generator-maven-plugin:5.2.1'
+
+//    implementation "io.springfox:springfox-swagger2:2.9.2"
+//    implementation "io.springfox:springfox-swagger-ui:2.9.2"
+//    implementation "org.openapitools:jackson-databind-nullable:0.2.1"
+
+
+//    swaggerCodegen 'io.swagger:swagger-codegen-cli:2.4.2'             // Swagger Codegen V2
+//    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.5'  // or Swagger Codegen V3
+//    swaggerCodegen 'org.openapitools:openapi-generator-cli:3.3.4'     // or OpenAPI Generator
+
+//    implementation('org.yaml:snakeyaml:1.29')
+
+
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//    implementation('io.springfox:springfox-swagger2:3.0.0')
+    swaggerUI('org.webjars:swagger-ui:3.51.2')
+    swaggerCodegen('org.openapitools:openapi-generator-cli:5.2.1')
+    implementation('org.openapitools:jackson-databind-nullable:0.2.1')
+
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+    implementation 'mysql:mysql-connector-java:8.0.26'
+
+
+}
+
+//apply plugin: 'org.openapi.generator'
+
+//openApiGenerate {
+//    generatorName = "spring"
+//    inputSpec = "$rootDir/specs/userservice.yml".toString()
+//    outputDir = "$buildDir/generated".toString()
+//    apiPackage = "org.openapi.example.api"
+//    invokerPackage = "org.openapi.example.invoker"
+//    modelPackage = "org.openapi.example.model"
+//    configOptions = [
+//            dateLibrary: "java8"
+//    ]
+//}
+
+//sourceSets.main.java.srcDir "${buildDir}/generated/src/main/java"
+
+//compileJava.dependsOn tasks.openApiGenerate
+
+
+swaggerSources {
+    userService {
+        inputFile = file('specs/userservice.yml')
+        code {
+            language = 'spring'
+            configFile = file('specs/spring-generator-config.json')
+        }
+    }
+}
+
+compileJava.dependsOn swaggerSources.userService.code
+sourceSets.main.java.srcDir "${swaggerSources.userService.code.outputDir}/src/main/java"
+
+
+test {
+    useJUnitPlatform()
+}

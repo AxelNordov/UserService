@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: userService API
+  description: UserService API description
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+paths:
+  /api/v1/users:
+    description: get all users
+    get:
+      summary: List All users
+      operationId: getAllUsers
+      description: Gets a list of all `user` entities.
+      tags:
+        - user-controller
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: successful response
+    post:
+      summary: List All users
+      operationId: addUser
+      description: Gets a list of all `user` entities.
+      tags:
+        - user-controller
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: successful response
+  /api/v1/users/{id}:
+    get:
+      summary: A sample get endpoint
+      operationId: getUser
+      tags:
+        - user-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: An ID as a path variable
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An expected response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        default:
+          description: An unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: A sample get endpoint
+      operationId: updateUser
+      tags:
+        - user-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: An ID as a path variable
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An expected response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+        default:
+          description: An unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: A sample get endpoint
+      operationId: deleteUser
+      tags:
+        - user-controller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: An ID as a path variable
+          schema:
+            type: string
+      responses:
+        '204':
+          description: An expected response
+        default:
+          description: An unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/v1/userGroups:
+    get:
+      summary: List All userGroups
+      operationId: getAllUserGroups
+      description: Gets a list of all `userGroup` entities.
+      tags:
+        - userGroup-controller
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserGroup'
+          description: successful response
+components:
+  schemas:
+    User:
+      title: User
+      description: User description
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: b9c9f404-1459-11ec-82a8-0242ac130003
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Smith
+        email:
+          type: string
+          example: my@email.com
+        userGroups:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserGroup"
+    UserGroup:
+      title: UserGroup
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: b9c9f404-1459-11ec-82a8-0242ac130003
+        name:
+          type: string
+          example: Guest
+    Response:
+      required:
+        - attr
+      properties:
+        attr:
+          type: string
+    Error:
+      required:
+        - httpCode
+        - errorMessage
+      properties:
+        httpCode:
+          type: integer
+          format: int32
+        errorMessage:
+          type: string
