@@ -21,10 +21,10 @@ public class UserController implements UserControllerApi {
     @Override
     public ResponseEntity<List<UserDto>> getAllUsers() {
         UserDto user = new UserDto();
-                        user.setUuid(UUID.randomUUID().toString());
-                        user.setFirstName("Grigoriy");
-                        user.setLastName("Kovalenko");
-                        user.setEmail("grig@gamil.com");
+        user.setUuid(UUID.randomUUID().toString());
+        user.setFirstName("Grigoriy");
+        user.setLastName("Kovalenko");
+        user.setEmail("grig@gamil.com");
         return ResponseEntity.ok(List.of(user));
     }
 

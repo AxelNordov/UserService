@@ -3,6 +3,7 @@ package com.example.userservicetest.service;
 import com.example.userservicetest.entity.UserGroup;
 import com.example.userservicetest.mapper.UserGroupMapper;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import package_com.example.userservicetest.model.UserGroupDto;
 
@@ -11,14 +12,17 @@ import java.util.UUID;
 @Service
 public class UserGroupService {
 
+    @Autowired
+    UserGroupMapper userGroupMapper;
+
     public UserGroupDto getUserGroup() {
-        UserGroup userGroup = new UserGroup();
-                userGroup.setName("guest!!");
-                userGroup.setUuid(UUID.randomUUID().toString());
+        UserGroup userGroup = UserGroup.builder()
+                .name("guest!!")
+                .uuid(UUID.randomUUID().toString())
+                .build();
 
         System.out.println("hello");
 
-        UserGroupMapper userGroupMapper = Mappers.getMapper(UserGroupMapper.class);
         return userGroupMapper.userGroupUserGroupDto(userGroup);
     }
 
