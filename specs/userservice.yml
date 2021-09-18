@@ -708,7 +708,7 @@ components:
       properties:
         uuid:
           type: string
-          format: uuid
+#          format: uuid
           # example: b9c9f404-1459-11ec-82a8-0242ac130003
         firstName:
           type: string
@@ -728,7 +728,7 @@ components:
       properties:
         uuid:
           type: string
-          format: uuid
+#          format: uuid
           # example: b9c9f404-1459-11ec-82a8-0242ac130003
         name:
           type: string

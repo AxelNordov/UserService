@@ -27,7 +27,6 @@ public class UserController implements UserControllerApi {
 
     @Override
     public ResponseEntity<UserDto> createUser(UserDto userDto) {
-        System.out.println(userDto);
         return ResponseEntity.ok(userService.createUser(userDto));
     }
 

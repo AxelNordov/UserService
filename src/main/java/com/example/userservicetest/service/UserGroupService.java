@@ -17,7 +17,7 @@ public class UserGroupService {
     public UserGroupDto getUserGroup() {
         UserGroup userGroup = UserGroup.builder()
                 .name("guest!!")
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .build();
 
         return userGroupMapper.userGroupToUserGroupDto(userGroup);

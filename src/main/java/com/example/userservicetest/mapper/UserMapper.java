@@ -4,6 +4,8 @@ import com.example.userservicetest.entity.User;
 import org.mapstruct.*;
 import package_com.example.userservicetest.model.UserDto;
 
+import java.util.UUID;
+
 //@Mapper(componentModel = "spring")
 @Mapper(componentModel = "spring", uses = {UserGroupMapper.class})
 public interface UserMapper {
@@ -14,5 +16,4 @@ public interface UserMapper {
 //            nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
     @Mapping(target = "uuid", ignore = true)
     User userDtoToUser(UserDto userDto);
-
 }

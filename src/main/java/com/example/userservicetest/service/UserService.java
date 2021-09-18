@@ -33,16 +33,16 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
+        System.out.println(userDto);
         User entity = userMapper.userDtoToUser(userDto);
         System.out.println(entity);
-        return userMapper.userToUserDto(
-                userRepository.save(entity));
+        return userMapper.userToUserDto(userRepository.save(entity));
     }
 
     public UserDto updateUser(String id, UserDto userDto) {
         userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        userDto.setUuid(UUID.fromString(id));
+        userDto.setUuid(id);
         userRepository.save(userMapper.userDtoToUser(userDto));
         return userMapper.userToUserDto(userRepository.findById(id).get());
     }
