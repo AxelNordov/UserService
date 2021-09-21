@@ -17,9 +17,11 @@ public class UserGroupController implements UserGroupControllerApi {
 
     @Override
     public ResponseEntity<List<UserGroupDto>> getUserGroups() {
-        UserGroupDto userGroupDto = userGroupService.getUserGroup();
-        System.out.println(userGroupDto);
-        return ResponseEntity.ok(List.of());
+        return ResponseEntity.ok(userGroupService.getUserGroups());
     }
 
+    @Override
+    public ResponseEntity<UserGroupDto> createUserGroup(UserGroupDto userGroupDto) {
+        return ResponseEntity.ok(userGroupService.createUserGroup(userGroupDto));
+    }
 }

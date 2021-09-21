@@ -10,7 +10,9 @@ import java.util.UUID;
 public interface UserGroupMapper {
 
     //    @Mapping(target = "name", ignore = true)
-    UserGroupDto userGroupToUserGroupDto(UserGroup userGroup);
+    UserGroupDto toDto(UserGroup userGroup);
 
-    UserGroup userGroupDtoToUserGroup(UserGroupDto userGroupDto);
+    UserGroup toEntity(UserGroupDto userGroupDto);
+
+//    UserGroup toEntity(String uuid);
 }

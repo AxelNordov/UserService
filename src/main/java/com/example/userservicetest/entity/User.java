@@ -2,10 +2,10 @@ package com.example.userservicetest.entity;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -19,7 +19,8 @@ public class User {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
-    private String uuid;
+    @Type(type = "uuid-char")
+    private UUID uuid;
 
     private String firstName;
 
@@ -28,6 +29,6 @@ public class User {
     private String email;
 
     @OneToMany
-    private List<UserGroup> userGroups;
+    private Set<UserGroup> userGroups;
 }
 
