@@ -80,6 +80,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: successful operation
@@ -106,6 +107,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       requestBody:
         description: Updated user object
         content:
@@ -139,6 +141,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         '400':
           description: Invalid id supplied
@@ -217,14 +220,11 @@ components:
           items:
             type: string
             format: uuid
-    #            $ref: "#/components/schemas/UserGroup"
     UserGroup:
       type: object
       properties:
         uuid:
           type: string
-          #          format: uuid
-          # example: b9c9f404-1459-11ec-82a8-0242ac130003
+          format: uuid
         name:
           type: string
-          # example: Guest

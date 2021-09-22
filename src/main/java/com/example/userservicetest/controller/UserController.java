@@ -8,9 +8,9 @@ import package_com.example.userservicetest.api.UserControllerApi;
 import package_com.example.userservicetest.model.UserDto;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-//@Api(value = "UserController", description = "the UserController!!!! API")
 public class UserController implements UserControllerApi {
     @Autowired
     UserService userService;
@@ -21,8 +21,8 @@ public class UserController implements UserControllerApi {
     }
 
     @Override
-    public ResponseEntity<UserDto> getUserById(String id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    public ResponseEntity<UserDto> getUserById(UUID uuid) {
+        return ResponseEntity.ok(userService.getUserById(uuid));
     }
 
     @Override
@@ -31,13 +31,13 @@ public class UserController implements UserControllerApi {
     }
 
     @Override
-    public ResponseEntity<UserDto> updateUser(String id, UserDto userDto) {
-        return ResponseEntity.ok(userService.updateUser(id, userDto));
+    public ResponseEntity<UserDto> updateUser(UUID uuid, UserDto userDto) {
+        return ResponseEntity.ok(userService.updateUser(uuid, userDto));
     }
 
     @Override
-    public ResponseEntity<Void> deleteUser(String id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(UUID uuid) {
+        userService.deleteUser(uuid);
         return ResponseEntity.ok().build();
     }
 

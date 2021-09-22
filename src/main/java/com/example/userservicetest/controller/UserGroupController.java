@@ -10,7 +10,6 @@ import package_com.example.userservicetest.model.UserGroupDto;
 import java.util.List;
 
 @RestController
-//@Api(value = "UserGroupController", description = "the UserGroupController!!!! API")
 public class UserGroupController implements UserGroupControllerApi {
     @Autowired
     UserGroupService userGroupService;

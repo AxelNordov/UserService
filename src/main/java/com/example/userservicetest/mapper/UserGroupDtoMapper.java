@@ -7,10 +7,10 @@ import package_com.example.userservicetest.model.UserGroupDto;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
-public interface UserGroupMapper {
+public interface UserGroupDtoMapper {
 
-    UserGroup map(UserGroupDto userGroupDto);
+    UserGroupDto map(UserGroup userGroup);
 
-    UserGroup map(UUID value);
+    UserGroupDto map(UUID value);
 
 }

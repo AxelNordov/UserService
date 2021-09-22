@@ -1,6 +1,7 @@
 package com.example.userservicetest.service;
 
 import com.example.userservicetest.entity.UserGroup;
+import com.example.userservicetest.mapper.UserGroupDtoMapper;
 import com.example.userservicetest.mapper.UserGroupMapper;
 import com.example.userservicetest.repository.UserGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,18 @@ public class UserGroupService {
 
     @Autowired
     UserGroupMapper userGroupMapper;
+    @Autowired
+    UserGroupDtoMapper userGroupDtoMapper;
 
     public UserGroupDto createUserGroup(UserGroupDto userGroupDto) {
-        UserGroup entity = userGroupMapper.toEntity(userGroupDto);
-        return userGroupMapper.toDto(userGroupRepository.save(entity));
+        UserGroup entity = userGroupMapper.map(userGroupDto);
+        return userGroupDtoMapper.map(userGroupRepository.save(entity));
     }
 
     public List<UserGroupDto> getUserGroups() {
         return userGroupRepository.findAll()
                 .stream()
-                .map(userGroup -> userGroupMapper.toDto(userGroup))
+                .map(userGroup -> userGroupDtoMapper.map(userGroup))
                 .collect(Collectors.toList());
     }
 }
