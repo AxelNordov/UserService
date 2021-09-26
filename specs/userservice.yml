@@ -67,14 +67,14 @@ paths:
         default:
           description: successful operation
           content: { }
-  /api/v1/users/{id}:
+  /api/v1/users/{uuid}:
     get:
       tags:
         - user-controller
       summary: Get user by id
       operationId: getUserById
       parameters:
-        - name: id
+        - name: uuid
           in: path
           description: 'The id that needs to be fetched.'
           required: true
@@ -101,7 +101,7 @@ paths:
       description: Updates user.
       operationId: updateUser
       parameters:
-        - name: id
+        - name: uuid
           in: path
           description: The id that need to be updated
           required: true
@@ -135,7 +135,7 @@ paths:
       description: This can only be done by the logged in user.
       operationId: deleteUser
       parameters:
-        - name: id
+        - name: uuid
           in: path
           description: The id that needs to be deleted
           required: true
@@ -197,6 +197,89 @@ paths:
         default:
           description: successful operation
           content: { }
+  /api/v1/usergroups/{uuid}:
+    get:
+      tags:
+        - user-group-controller
+      summary: Get user by id
+      operationId: getUserGroupById
+      parameters:
+        - name: uuid
+          in: path
+          description: 'The id that needs to be fetched.'
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroup'
+        '400':
+          description: Invalid is supplied
+          content: { }
+        '404':
+          description: UserGroup not found
+          content: { }
+    put:
+      tags:
+        - user-group-controller
+      summary: Updated user
+      description: Updates user.
+      operationId: updateUserGroup
+      parameters:
+        - name: uuid
+          in: path
+          description: The id that need to be updated
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Updated user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UserGroup'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroup'
+        '400':
+          description: Invalid id supplied
+          content: { }
+        '404':
+          description: UserGroup not found
+          content: { }
+    delete:
+      tags:
+        - user-group-controller
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUserGroup
+      parameters:
+        - name: uuid
+          in: path
+          description: The id that needs to be deleted
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '400':
+          description: Invalid id supplied
+          content: { }
+        '404':
+          description: UserGroup not found
+          content: { }
+
 components:
   schemas:
     User:
@@ -205,16 +288,12 @@ components:
         uuid:
           type: string
           format: uuid
-          # example: b9c9f404-1459-11ec-82a8-0242ac130003
         firstName:
           type: string
-          # example: John
         lastName:
           type: string
-          # example: Smith
         email:
           type: string
-          # example: my@email.com
         userGroups:
           type: array
           items:

@@ -9,5 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserGroupRepository extends CrudRepository<UserGroup, UUID> {
+
     List<UserGroup> findAll();
+
 }

@@ -12,32 +12,33 @@ import java.util.UUID;
 
 @RestController
 public class UserController implements UserControllerApi {
+
     @Autowired
     UserService userService;
 
     @Override
     public ResponseEntity<List<UserDto>> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @Override
     public ResponseEntity<UserDto> getUserById(UUID uuid) {
-        return ResponseEntity.ok(userService.getUserById(uuid));
+        return ResponseEntity.ok(userService.getById(uuid));
     }
 
     @Override
     public ResponseEntity<UserDto> createUser(UserDto userDto) {
-        return ResponseEntity.ok(userService.createUser(userDto));
+        return ResponseEntity.ok(userService.create(userDto));
     }
 
     @Override
     public ResponseEntity<UserDto> updateUser(UUID uuid, UserDto userDto) {
-        return ResponseEntity.ok(userService.updateUser(uuid, userDto));
+        return ResponseEntity.ok(userService.update(uuid, userDto));
     }
 
     @Override
     public ResponseEntity<Void> deleteUser(UUID uuid) {
-        userService.deleteUser(uuid);
+        userService.delete(uuid);
         return ResponseEntity.ok().build();
     }
 
