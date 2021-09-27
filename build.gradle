@@ -28,7 +28,8 @@ dependencies {
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 //    implementation('io.springfox:springfox-swagger2:3.0.0')
     swaggerUI('org.webjars:swagger-ui:3.51.2')
-    swaggerCodegen('org.openapitools:openapi-generator-cli:5.2.1')
+    swaggerCodegen('org.openapitools:openapi-generator-cli:5.0.0')
+//    swaggerCodegen('org.openapitools:openapi-generator-cli:5.2.1')
     implementation('org.openapitools:jackson-databind-nullable:0.2.1')
 
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'

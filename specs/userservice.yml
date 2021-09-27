@@ -294,6 +294,12 @@ components:
           type: string
         email:
           type: string
+        status:
+          type: string
+          nullable: true
+          enum:
+            - active
+            - blocked
         userGroups:
           type: array
           items:
