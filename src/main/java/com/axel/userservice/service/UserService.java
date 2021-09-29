@@ -1,10 +1,10 @@
-package com.example.userservicetest.service;
+package com.axel.userservice.service;
 
-import com.example.userservicetest.entity.User;
-import com.example.userservicetest.mapper.UserDtoMapper;
-import com.example.userservicetest.mapper.UserMapper;
-import com.example.userservicetest.repository.UserGroupRepository;
-import com.example.userservicetest.repository.UserRepository;
+import com.axel.userservice.entity.User;
+import com.axel.userservice.mapper.UserDtoMapper;
+import com.axel.userservice.mapper.UserMapper;
+import com.axel.userservice.repository.UserGroupRepository;
+import com.axel.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import package_com.example.userservicetest.model.UserDto;

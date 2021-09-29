@@ -1,6 +1,6 @@
-package com.example.userservicetest.mapper;
+package com.axel.userservice.mapper;
 
-import com.example.userservicetest.entity.UserGroup;
+import com.axel.userservice.entity.UserGroup;
 import org.mapstruct.Mapper;
 import package_com.example.userservicetest.model.UserGroupDto;
 

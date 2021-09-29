@@ -1,4 +1,4 @@
-package com.example.userservicetest.config;
+package com.axel.userservice.config;
 
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.context.annotation.Bean;

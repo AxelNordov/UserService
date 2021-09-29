@@ -1,13 +1,13 @@
-package com.example.userservicetest;
+package com.axel.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UserServiceTestApplication {
+public class UserServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UserServiceTestApplication.class, args);
+        SpringApplication.run(UserServiceApplication.class, args);
     }
 
 }

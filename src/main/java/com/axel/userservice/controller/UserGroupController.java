@@ -1,6 +1,6 @@
-package com.example.userservicetest.controller;
+package com.axel.userservice.controller;
 
-import com.example.userservicetest.service.UserGroupService;
+import com.axel.userservice.service.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

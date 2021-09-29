@@ -1,6 +1,6 @@
-package com.example.userservicetest.repository;
+package com.axel.userservice.repository;
 
-import com.example.userservicetest.entity.UserGroup;
+import com.axel.userservice.entity.UserGroup;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

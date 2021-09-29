@@ -1,4 +1,4 @@
-package com.example.userservicetest.entity;
+package com.axel.userservice.entity;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

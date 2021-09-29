@@ -1,4 +1,4 @@
-package com.example.userservicetest.entity;
+package com.axel.userservice.entity;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,7 +29,7 @@ public class User {
 
     private String email;
 
-    private String status;
+//    private String status;
 
     @OneToMany
     private Set<UserGroup> userGroups;
