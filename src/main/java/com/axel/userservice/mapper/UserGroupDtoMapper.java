@@ -11,10 +11,6 @@ public interface UserGroupDtoMapper {
 
     UserGroupDto map(UserGroup userGroup);
 
-    default UserGroupDto map(UUID uuid) {
-        UserGroupDto userGroupDto = new UserGroupDto();
-        userGroupDto.setUuid(uuid);
-        return userGroupDto;
-    }
+    UserGroupDto map(UUID uuid);
 
 }

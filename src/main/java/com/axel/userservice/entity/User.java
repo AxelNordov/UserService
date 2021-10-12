@@ -14,6 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user")
 public class User {
 
     @Id
@@ -29,9 +30,12 @@ public class User {
 
     private String email;
 
-//    private String status;
-
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "user_user_groups",
+            joinColumns = {@JoinColumn(name = "user_uuid")},
+            inverseJoinColumns = {@JoinColumn(name = "user_groups_uuid")}
+    )
     private Set<UserGroup> userGroups;
 
 }

@@ -11,8 +11,4 @@ public interface UserMapper {
     @Mapping(target = "uuid", ignore = true)
     User map(UserDto userDto);
 
-//    default String map(JsonNullable<UserDto.StatusEnum> value) {
-//        return value.get().getValue().toUpperCase();
-//    }
-
 }

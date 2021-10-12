@@ -1,29 +1,33 @@
-create table user_schema.user
+CREATE TABLE `user`
 (
-    uuid       varchar(255) not null
-        primary key,
-    email      varchar(255) null,
-    first_name varchar(255) null,
-    last_name  varchar(255) null
+    `uuid`       VARCHAR(255) NOT NULL,
+    `email`      VARCHAR(255) NULL,
+    `first_name` VARCHAR(255) NULL,
+    `last_name`  VARCHAR(255) NULL,
+    PRIMARY KEY (`uuid`)
 );
 
-create table user_schema.user_group
+CREATE TABLE `usergroup`
 (
-    uuid varchar(255) not null
-        primary key,
-    name varchar(255) null
+    `uuid` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(255) NULL,
+    PRIMARY KEY (`uuid`)
 );
 
-create table user_schema.user_user_groups
+CREATE TABLE `user_user_groups`
 (
-    user_uuid        varchar(255) not null,
-    user_groups_uuid varchar(255) not null,
-    primary key (user_uuid, user_groups_uuid),
-    constraint UK_2sv00ert6liqf17a6y6e9ffd0
-        unique (user_groups_uuid),
-    constraint FKdhf56j1xo789byelt7gooctpu
-        foreign key (user_uuid) references user_schema.user (uuid),
-    constraint FKwa4h07r29qqjslumsipgahdw
-        foreign key (user_groups_uuid) references user_schema.user_group (uuid)
+    `user_uuid`        VARCHAR(255) NOT NULL,
+    `user_groups_uuid` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`user_uuid`, `user_groups_uuid`),
+    CONSTRAINT `FK_User_user_groups_Users`
+        FOREIGN KEY (`user_uuid`)
+            REFERENCES `user` (`uuid`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `FK_User_user_groups_User_groups`
+        FOREIGN KEY (`user_groups_uuid`)
+            REFERENCES `usergroup` (`uuid`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION
 );
 

@@ -15,12 +15,14 @@ public interface UserGroupMapper {
     @Mapping(target = "uuid", ignore = true)
     UserGroup map(UserGroupDto userGroupDto);
 
-    UserGroup map(UUID value);
+    UserGroup map(UUID uuid);
 
-    Set<UserGroup> map(List<UUID> value);
+    Set<UserGroup> map(List<UUID> uuids);
 
-    List<UUID> map(Set<UserGroup> value);
+    List<UUID> map(Set<UserGroup> userGroups);
 
-    UUID map(UserGroup value);
+    default UUID map(UserGroup userGroup) {
+        return userGroup.getUuid();
+    }
 
 }

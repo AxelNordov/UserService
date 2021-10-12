@@ -9,8 +9,4 @@ public interface UserDtoMapper {
 
     UserDto map(User user);
 
-//    default JsonNullable<UserDto.StatusEnum> map(String value) {
-//        return JsonNullable.of(UserDto.StatusEnum.valueOf(value));
-//    }
-
 }
