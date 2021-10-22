@@ -3,6 +3,7 @@ package com.axel.userservice.mapper;
 import com.axel.userservice.entity.UserGroup;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import package_com.example.userservicetest.model.UserGroupDto;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public interface UserGroupMapper {
 
     @Mapping(target = "uuid", ignore = true)
     UserGroup map(UserGroupDto userGroupDto);
+
+    @Mapping(target = "uuid", source = "uuid")
+    UserGroup map(UserGroupDto userGroupDto, UUID uuid);
 
     UserGroup map(UUID uuid);
 

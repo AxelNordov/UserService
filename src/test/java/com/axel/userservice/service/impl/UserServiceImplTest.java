@@ -4,11 +4,11 @@ import com.axel.userservice.entity.User;
 import com.axel.userservice.mapper.UserDtoMapper;
 import com.axel.userservice.mapper.UserMapper;
 import com.axel.userservice.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import package_com.example.userservicetest.model.UserDto;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,99 +16,81 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
-    @Mock
-    UserRepository userRepository;
+    private final static UUID USER_UUID = UUID.randomUUID();
+    private final static UUID ANOTHER_USER_UUID = UUID.randomUUID();
+    private final static UUID UUID_C = UUID.randomUUID();
 
     @Mock
-    UserMapper userMapper;
+    private UserRepository userRepository;
 
     @Mock
-    UserDtoMapper userDtoMapper;
+    private UserMapper userMapper;
+
+    @Mock
+    private UserDtoMapper userDtoMapper;
 
     @InjectMocks
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
-    }
+    @Mock
+    private UserDto userDtoA;
+
+    @Mock
+    private UserDto userDtoB;
+
+    @Mock
+    private User userA;
+
+    @Mock
+    private User userB;
 
     @Test
     void getAll_shouldReturnsList() {
-        var uuidA = UUID.randomUUID();
-        var uuidB = UUID.randomUUID();
-        var uuidC = UUID.randomUUID();
-        var userA = User.builder().uuid(uuidA).firstName("A").build();
-        var userB = User.builder().uuid(uuidB).firstName("B").build();
-        var userC = User.builder().uuid(uuidC).firstName("C").build();
-        var userList = List.of(userA, userB, userC);
-        when(userRepository.findAll()).thenReturn(userList);
-
-        var userDtoA = new UserDto();
-        userDtoA.setUuid(uuidA);
-        userDtoA.setFirstName("A");
-        var userDtoB = new UserDto();
-        userDtoB.setUuid(uuidB);
-        userDtoB.setFirstName("B");
-        var userDtoC = new UserDto();
-        userDtoC.setUuid(uuidC);
-        userDtoC.setFirstName("C");
+        doReturn(List.of(userA, userB)).when(userRepository).findAll();
+//        when(userRepository.findAll()).thenReturn(List.of(userA, userB));
         when(userDtoMapper.map(userA)).thenReturn(userDtoA);
         when(userDtoMapper.map(userB)).thenReturn(userDtoB);
-        when(userDtoMapper.map(userC)).thenReturn(userDtoC);
-        var userDtoList = List.of(userDtoA, userDtoB, userDtoC);
+        var result = userService.getAll();
+        assertThat(result).hasSize(2).containsExactly(userDtoA, userDtoB);
+    }
 
-        var userDtoListResult = userService.getAll();
-
-        assertEquals(3, userDtoList.size());
-        assertTrue(userDtoListResult.containsAll(userDtoList));
-        verify(userRepository, times(1)).findAll();
+    private User getBuiltUser(UUID uuidA) {
+        return User.builder().uuid(uuidA).build();
     }
 
     @Test
     void getById_whenUserIsPresent_shouldReturnUserDto() {
-        var uuidA = UUID.randomUUID();
-        var userA = User.builder().uuid(uuidA).firstName("A").build();
-        when(userRepository.findById(uuidA)).thenReturn(Optional.of(userA));
-
-        var userDtoA = new UserDto();
-        userDtoA.setUuid(uuidA);
-        userDtoA.setFirstName("A");
-        when(userDtoMapper.map(userA)).thenReturn(userDtoA);
-
-        var userDtoResult = userService.getById(uuidA);
-
-        assertEquals(userDtoA, userDtoResult);
-        verify(userRepository, times(1)).findById(any(UUID.class));
+        doReturn(Optional.of(userA)).when(userRepository).findById(USER_UUID);
+        doReturn(userDtoA).when(userDtoMapper).map(userA);
+        var result = userService.getById(USER_UUID);
+        assertThat(result).isEqualTo(userDtoA);
     }
 
     @Test
     void getById_whenUserIsAbsent_shouldThrowException() {
-        var uuidB = UUID.randomUUID();
-        when(userRepository.findById(uuidB)).thenThrow(new EntityNotFoundException());
-
-        assertThrows(EntityNotFoundException.class, () -> userService.getById(uuidB));
-        verify(userRepository, times(1)).findById(any(UUID.class));
+        doThrow(new EntityNotFoundException()).when(userRepository).findById(USER_UUID);
+        assertThatThrownBy(() -> userService.getById(USER_UUID)).isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
     void create_shouldCreateUserWithGeneratedUuid() {
-        var uuidA = UUID.randomUUID();
         var userDtoA = new UserDto();
-        userDtoA.setUuid(uuidA);
-        userDtoA.setFirstName("A");
-        var userA = User.builder().uuid(uuidA).firstName("A").build();
+        userDtoA.setUuid(USER_UUID);
+        var userA = getBuiltUser(USER_UUID);
 
         var generatedUuid = UUID.randomUUID();
-        var userCreated = User.builder().uuid(generatedUuid).firstName("A").build();
+        var userCreated = getBuiltUser(generatedUuid);
         var userDtoCreated = new UserDto();
         userDtoCreated.setUuid(generatedUuid);
-        userDtoCreated.setFirstName("A");
 
         when(userMapper.map(userDtoA)).thenReturn(userA);
         when(userRepository.save(userA)).thenReturn(userCreated);
@@ -122,26 +104,22 @@ class UserServiceImplTest {
 
     @Test
     void update_whenUserIsPresent_shouldUpdateUser() {
-        var uuidA = UUID.randomUUID();
-        var userA = User.builder().uuid(uuidA).firstName("A").build();
+        var userA = getBuiltUser(USER_UUID);
 
-        var uuidC = UUID.randomUUID();
         var userDtoC = new UserDto();
-        userDtoC.setUuid(uuidC);
-        userDtoC.setFirstName("C");
-        var userC = User.builder().uuid(uuidC).firstName("C").build();
+        userDtoC.setUuid(UUID_C);
+        var userC = getBuiltUser(UUID_C);
 
-        var userAUpdated = User.builder().uuid(uuidA).firstName("C").build();
+        var userAUpdated = getBuiltUser(USER_UUID);
         var userDtoAUpdated = new UserDto();
-        userDtoAUpdated.setUuid(uuidA);
-        userDtoAUpdated.setFirstName("C");
+        userDtoAUpdated.setUuid(USER_UUID);
 
-        when(userRepository.findById(uuidA)).thenReturn(Optional.of(userA));
+        when(userRepository.findById(USER_UUID)).thenReturn(Optional.of(userA));
         when(userMapper.map(userDtoC)).thenReturn(userC);
         when(userRepository.save(any(User.class))).thenReturn(userAUpdated);
         when(userDtoMapper.map(userAUpdated)).thenReturn(userDtoAUpdated);
 
-        var userDtoResult = userService.update(uuidA, userDtoC);
+        var userDtoResult = userService.update(USER_UUID, userDtoC);
 
         assertEquals(userDtoAUpdated, userDtoResult);
         verify(userRepository, times(1)).findById(any(UUID.class));
@@ -150,37 +128,29 @@ class UserServiceImplTest {
 
     @Test
     void update_whenUserIsPresent_shouldThrowException() {
-        var uuidB = UUID.randomUUID();
-        var uuidC = UUID.randomUUID();
         var userDtoC = new UserDto();
-        userDtoC.setUuid(uuidC);
-        userDtoC.setFirstName("C");
-        when(userRepository.findById(uuidB)).thenThrow(new EntityNotFoundException());
+        userDtoC.setUuid(UUID_C);
+        when(userRepository.findById(ANOTHER_USER_UUID)).thenThrow(new EntityNotFoundException());
 
-        assertThrows(EntityNotFoundException.class, () -> userService.update(uuidB, userDtoC));
+        assertThrows(EntityNotFoundException.class, () -> userService.update(ANOTHER_USER_UUID, userDtoC));
         verify(userRepository, times(1)).findById(any(UUID.class));
         verify(userRepository, times(0)).save(any(User.class));
     }
 
     @Test
     void delete_whenUserIsPresent_shouldDeleteUser() {
-        var uuidA = UUID.randomUUID();
-        var userA = User.builder().uuid(uuidA).firstName("A").build();
-        doNothing().when(userRepository).deleteById(uuidA);
+        doNothing().when(userRepository).deleteById(USER_UUID);
 
-        userService.delete(uuidA);
+        userService.delete(USER_UUID);
 
         verify(userRepository, times(1)).deleteById(any(UUID.class));
     }
 
     @Test
     void delete_whenUserIsAbsent_shouldDoNothing() {
-        var uuidA = UUID.randomUUID();
-        var uuidB = UUID.randomUUID();
-        var userA = User.builder().uuid(uuidA).firstName("A").build();
-        doNothing().when(userRepository).deleteById(uuidB);
+        doNothing().when(userRepository).deleteById(ANOTHER_USER_UUID);
 
-        userService.delete(uuidB);
+        userService.delete(ANOTHER_USER_UUID);
 
         verify(userRepository, times(1)).deleteById(any(UUID.class));
     }

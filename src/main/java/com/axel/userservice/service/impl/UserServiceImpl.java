@@ -20,10 +20,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
     @Autowired
     UserDtoMapper userDtoMapper;
+
     @Autowired
     UserGroupRepository userGroupRepository;
+
     @Autowired
     UserRepository userRepository;
 
@@ -35,9 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDto getById(UUID id) {
-        return userDtoMapper.map(
-                userRepository.findById(id)
-                        .orElseThrow(EntityNotFoundException::new));
+        var user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return userDtoMapper.map(user);
     }
 
     public UserDto create(UserDto userDto) {

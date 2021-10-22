@@ -43,8 +43,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     public UserGroupDto update(UUID uuid, UserGroupDto userGroupDto) {
         userGroupRepository.findById(uuid)
                 .orElseThrow(EntityNotFoundException::new);
-        UserGroup currentUserGroup = userGroupMapper.map(userGroupDto);
-        currentUserGroup.setUuid(uuid);
+        UserGroup currentUserGroup = userGroupMapper.map(userGroupDto, uuid);
         return userGroupDtoMapper.map(userGroupRepository.save(currentUserGroup));
     }
 

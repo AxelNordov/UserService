@@ -15,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserGroupMapperTest {
 
+//    @InjectMocks
+//    private final InvitationMapper mapper = spy(Mappers.getMapper(InvitationMapper.class));
+
     UserGroupMapper userGroupMapper = Mockito.mock(UserGroupMapper.class);
 
     @Test
