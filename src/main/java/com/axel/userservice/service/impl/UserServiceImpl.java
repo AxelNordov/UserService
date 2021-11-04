@@ -37,22 +37,22 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto getById(UUID id) {
-        var user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public UserDto getById(UUID uuid) {
+        var user = userRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("there is no user with id: " + uuid));
         return userDtoMapper.map(user);
     }
 
     public UserDto create(UserDto userDto) {
-        return userDtoMapper.map(
-                userRepository.save(userMapper.map(userDto)));
+        var newUser = userMapper.map(userDto);
+        return userDtoMapper.map(userRepository.save(newUser));
     }
 
     public UserDto update(UUID uuid, UserDto userDto) {
         userRepository.findById(uuid)
-                .orElseThrow(EntityNotFoundException::new);
-        User currentUser = userMapper.map(userDto);
-        currentUser.setUuid(uuid);
-        return userDtoMapper.map(userRepository.save(currentUser));
+                .orElseThrow(() -> new EntityNotFoundException("there is no user with id: " + uuid));
+        var updatedUser = userMapper.map(userDto, uuid);
+        return userDtoMapper.map(userRepository.save(updatedUser));
     }
 
     public void delete(UUID uuid) {

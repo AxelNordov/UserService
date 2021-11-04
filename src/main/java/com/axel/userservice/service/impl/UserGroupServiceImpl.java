@@ -1,6 +1,5 @@
 package com.axel.userservice.service.impl;
 
-import com.axel.userservice.entity.UserGroup;
 import com.axel.userservice.mapper.UserGroupDtoMapper;
 import com.axel.userservice.mapper.UserGroupMapper;
 import com.axel.userservice.repository.UserGroupRepository;
@@ -32,19 +31,21 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     public UserGroupDto getById(UUID uuid) {
-        return userGroupDtoMapper.map(userGroupRepository.findById(uuid).get());
+        var userGroup = userGroupRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("there is no usergroup with id: " + uuid));
+        return userGroupDtoMapper.map(userGroup);
     }
 
     public UserGroupDto create(UserGroupDto userGroupDto) {
-        UserGroup entity = userGroupMapper.map(userGroupDto);
+        var entity = userGroupMapper.map(userGroupDto);
         return userGroupDtoMapper.map(userGroupRepository.save(entity));
     }
 
     public UserGroupDto update(UUID uuid, UserGroupDto userGroupDto) {
         userGroupRepository.findById(uuid)
-                .orElseThrow(EntityNotFoundException::new);
-        UserGroup currentUserGroup = userGroupMapper.map(userGroupDto, uuid);
-        return userGroupDtoMapper.map(userGroupRepository.save(currentUserGroup));
+                .orElseThrow(() -> new EntityNotFoundException("there is no usergroup with id: " + uuid));
+        var updatedUserGroup = userGroupMapper.map(userGroupDto, uuid);
+        return userGroupDtoMapper.map(userGroupRepository.save(updatedUserGroup));
     }
 
     public void delete(UUID uuid) {
