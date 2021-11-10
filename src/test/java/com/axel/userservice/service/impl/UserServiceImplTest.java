@@ -77,8 +77,10 @@ class UserServiceImplTest {
 
     @Test
     void getById_whenUserIsAbsent_shouldThrowException() {
-        doThrow(new EntityNotFoundException()).when(userRepository).findById(USER_UUID);
-        assertThatThrownBy(() -> testedEntry.getById(USER_UUID)).isInstanceOf(EntityNotFoundException.class);
+        doReturn(Optional.empty()).when(userRepository).findById(USER_UUID);
+        assertThatThrownBy(() -> testedEntry.getById(USER_UUID))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("there is no user with id: 6694ae43-2f57-409f-8ce3-b3a94141af01");
     }
 
     @Test
@@ -110,7 +112,6 @@ class UserServiceImplTest {
 
     @Test
     void delete_whenUserIsPresent_shouldDeleteUser() {
-//        doNothing().when(userRepository).deleteById(USER_UUID);
         testedEntry.delete(USER_UUID);
         verify(userRepository).deleteById(USER_UUID);
     }

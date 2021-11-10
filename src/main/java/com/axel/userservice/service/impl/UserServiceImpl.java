@@ -1,6 +1,5 @@
 package com.axel.userservice.service.impl;
 
-import com.axel.userservice.entity.User;
 import com.axel.userservice.mapper.UserDtoMapper;
 import com.axel.userservice.mapper.UserMapper;
 import com.axel.userservice.repository.UserGroupRepository;

@@ -13,5 +13,7 @@ public interface UserMapper {
     @Mapping(target = "uuid", ignore = true)
     User map(UserDto userDto);
 
+    @Mapping(target = "uuid", source = "uuid")
     User map(UserDto userDto, UUID uuid);
+
 }

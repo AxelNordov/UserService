@@ -18,8 +18,10 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Autowired
     UserGroupRepository userGroupRepository;
+
     @Autowired
     UserGroupMapper userGroupMapper;
+
     @Autowired
     UserGroupDtoMapper userGroupDtoMapper;
 
