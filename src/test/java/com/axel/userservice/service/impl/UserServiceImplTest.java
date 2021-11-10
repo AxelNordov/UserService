@@ -115,4 +115,5 @@ class UserServiceImplTest {
         testedEntry.delete(USER_UUID);
         verify(userRepository).deleteById(USER_UUID);
     }
+
 }

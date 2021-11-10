@@ -41,4 +41,5 @@ public class UserGroupController implements UserGroupControllerApi {
         userGroupService.delete(uuid);
         return ResponseEntity.ok().build();
     }
+
 }

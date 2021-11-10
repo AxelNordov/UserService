@@ -14,13 +14,14 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class UserMapperImplTest {
 
-    private static final UUID USER_DTO_UUID = UUID.fromString("6694ae43-2f57-409f-8ce3-b3a94141af01");
+    private static final UUID USER_UUID = UUID.fromString("6694ae43-2f57-409f-8ce3-b3a94141af01");
 
-    private static final UUID UPDATE_USER_UUID = UUID.fromString("6694ae43-2f57-409f-8ce3-b3a94141af02");
+    private static final UUID UPDATE_USER_UUID = UUID.fromString("98c57d11-8e5d-4423-b0be-caaf4c4755c0");
 
     private static final UUID USER_GROUP_UUID = UUID.fromString("6694ae43-2f57-409f-8ce3-b3a94141af01");
 
@@ -50,12 +51,12 @@ class UserMapperImplTest {
         assertThat(result.getUserGroups()).isEqualTo(Set.of(userGroup));
     }
 
-//    @Test
-//    void map_shouldNotSetUuid() { // TODO
-//        doReturn(USER_DTO_UUID).when(userDto).getUuid();
-//        var result = testedEntry.map(userDto);
-//        assertThat(result.getUuid()).isNull();
-//    }
+    @Test
+    void map_shouldNotSetUuid() {
+        lenient().doReturn(USER_UUID).when(userDto).getUuid();
+        var result = testedEntry.map(userDto);
+        assertThat(result.getUuid()).isNull();
+    }
 
     @Test
     void map_whenUserDtoIsNull_shouldReturnNull() {
@@ -64,37 +65,30 @@ class UserMapperImplTest {
     }
 
     @Test
-    void map_shouldUpdateUuid() {
-//        doReturn(Set.of(userGroup)).when(userGroupMapper).mapToUserGroupList(List.of(USER_GROUP_UUID));
-//        var result = testedEntry.map(userDto, UPDATE_USER_UUID);
-//        assertThat(result.getUuid()).isEqualTo(UPDATE_USER_UUID);
-//        assertThat(result.getFirstName()).isEqualTo(user.getFirstName());
-//        assertThat(result.getLastName()).isEqualTo(user.getLastName());
-//        assertThat(result.getEmail()).isEqualTo(user.getEmail());
-//        assertThat(result.getUserGroups()).isEqualTo(user.getUserGroups());
+    void mapWithUuid_shouldSetFields() {
+        doReturn("FirstName").when(userDto).getFirstName();
+        doReturn("LastName").when(userDto).getLastName();
+        doReturn("Email").when(userDto).getEmail();
+        doReturn(List.of(USER_GROUP_UUID)).when(userDto).getUserGroups();
+        doReturn(Set.of(userGroup)).when(userGroupMapper).mapToUserGroupList(List.of(USER_GROUP_UUID));
+        var result = testedEntry.map(userDto, UPDATE_USER_UUID);
+        assertThat(result.getFirstName()).isEqualTo("FirstName");
+        assertThat(result.getLastName()).isEqualTo("LastName");
+        assertThat(result.getEmail()).isEqualTo("Email");
+        assertThat(result.getUserGroups()).isEqualTo(Set.of(userGroup));
     }
 
     @Test
-    void map_whenUserDtoIsNull_shouldReturnNull_2() {
-        var result = testedEntry.map(null, UPDATE_USER_UUID);
-        assertThat(result).isNull();
+    void mapWithUuid_shouldNotSetUuid() {
+        lenient().doReturn(USER_UUID).when(userDto).getUuid();
+        var result = testedEntry.map(userDto, UPDATE_USER_UUID);
+        assertThat(result.getUuid()).isEqualTo(UPDATE_USER_UUID);
     }
 
     @Test
-    void map_whenUserDtoAndUuidIsNull_shouldReturnNull() {
+    void mapWithUuid_whenUserDtoAndUuidAreNull_shouldReturnNull() {
         var result = testedEntry.map(null, null);
         assertThat(result).isNull();
-    }
-
-    @Test
-    void map_whenUuidIsNull_shouldIgnoreUuid() { // TODO custom mapper
-//        doReturn(Set.of(userGroup)).when(userGroupMapper).mapToUserGroupList(List.of(USER_GROUP_UUID));
-//        var result = testedEntry.map(userDto, null);
-//        assertThat(result.getUuid()).isNull();
-//        assertThat(result.getFirstName()).isEqualTo(user.getFirstName());
-//        assertThat(result.getLastName()).isEqualTo(user.getLastName());
-//        assertThat(result.getEmail()).isEqualTo(user.getEmail());
-//        assertThat(result.getUserGroups()).isEqualTo(user.getUserGroups());
     }
 
 }

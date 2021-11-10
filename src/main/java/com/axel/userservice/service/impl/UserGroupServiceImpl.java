@@ -53,4 +53,5 @@ public class UserGroupServiceImpl implements UserGroupService {
     public void delete(UUID uuid) {
         userGroupRepository.deleteById(uuid);
     }
+
 }

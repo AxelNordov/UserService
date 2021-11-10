@@ -80,7 +80,7 @@ class UserGroupServiceImplTest {
         doReturn(Optional.empty()).when(userGroupRepository).findById(USER_UUID);
         assertThatThrownBy(() -> testedEntry.getById(USER_UUID))
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessage("there is no user with id: 6694ae43-2f57-409f-8ce3-b3a94141af01");
+                .hasMessage("there is no usergroup with id: 6694ae43-2f57-409f-8ce3-b3a94141af01");
     }
 
     @Test
@@ -107,7 +107,7 @@ class UserGroupServiceImplTest {
         doReturn(Optional.empty()).when(userGroupRepository).findById(USER_UUID);
         assertThatThrownBy(() -> testedEntry.update(USER_UUID, anotherUserGroupDto))
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessage("there is no user with id: 6694ae43-2f57-409f-8ce3-b3a94141af01");
+                .hasMessage("there is no usergroup with id: 6694ae43-2f57-409f-8ce3-b3a94141af01");
     }
 
     @Test
@@ -115,4 +115,5 @@ class UserGroupServiceImplTest {
         testedEntry.delete(USER_UUID);
         verify(userGroupRepository).deleteById(USER_UUID);
     }
+
 }

@@ -2,13 +2,12 @@ package com.axel.userservice.mapper;
 
 import com.axel.userservice.entity.User;
 import com.axel.userservice.entity.UserGroup;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import package_com.example.userservicetest.model.UserDto;
+import package_com.example.userservicetest.model.UserGroupDto;
 
 import java.util.List;
 import java.util.Set;
@@ -24,12 +23,8 @@ class UserDtoMapperImplTest {
 
     private static final UUID USER_GROUP_UUID = UUID.fromString("6694ae43-2f57-409f-8ce3-b3a94141af01");
 
-    private User user;
-
     @Mock
-    private User user2;
-
-    private UserDto userDto;
+    private User user;
 
     @Mock
     private UserGroup userGroup;
@@ -40,37 +35,21 @@ class UserDtoMapperImplTest {
     @InjectMocks
     private UserDtoMapperImpl testedEntry;
 
-    @BeforeEach
-    void init() {
-        user = User.builder()
-                .uuid(USER_UUID)
-                .firstName("firstName")
-                .lastName("lastName")
-                .email("email")
-                .userGroups(Set.of(userGroup))
-                .build();
-
-        userDto = new UserDto();
-        userDto.setUuid(USER_UUID);
-        userDto.setFirstName("firstName");
-        userDto.setLastName("lastName");
-        userDto.setEmail("email");
-        userDto.setUserGroups(List.of(USER_GROUP_UUID));
-    }
 
     @Test
     void map_shouldReturnUserDto() {
+        doReturn(USER_UUID).when(user).getUuid();
+        doReturn("FirstName").when(user).getFirstName();
+        doReturn("LastName").when(user).getLastName();
+        doReturn("Email").when(user).getEmail();
+        doReturn(Set.of(userGroup)).when(user).getUserGroups();
         doReturn(List.of(USER_GROUP_UUID)).when(userGroupDtoMapper).mapToUuidList(Set.of(userGroup));
         var result = testedEntry.map(user);
-        assertThat(result).isEqualTo(userDto);
-    }
-
-    @Test
-    void map_shouldReturnUserDto2() {
-        doReturn(USER_UUID).when(user2).getUuid();
-//        doReturn(List.of(USER_GROUP_UUID)).when(userGroupDtoMapper).mapToUuidList(Set.of(userGroup));
-        var result = testedEntry.map(user2);
         assertThat(result.getUuid()).isEqualTo(USER_UUID);
+        assertThat(result.getFirstName()).isEqualTo("FirstName");
+        assertThat(result.getLastName()).isEqualTo("LastName");
+        assertThat(result.getEmail()).isEqualTo("Email");
+        assertThat(result.getUserGroups()).isEqualTo(List.of(USER_GROUP_UUID));
     }
 
     @Test
