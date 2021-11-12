@@ -13,8 +13,12 @@ import java.util.UUID;
 @RestController
 public class UserGroupController implements UserGroupControllerApi {
 
+    private final UserGroupService userGroupService;
+
     @Autowired
-    UserGroupService userGroupService;
+    public UserGroupController(UserGroupService userGroupService) {
+        this.userGroupService = userGroupService;
+    }
 
     @Override
     public ResponseEntity<List<UserGroupDto>> getUserGroups() {

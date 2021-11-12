@@ -2,7 +2,6 @@ package com.axel.userservice.service.impl;
 
 import com.axel.userservice.mapper.UserDtoMapper;
 import com.axel.userservice.mapper.UserMapper;
-import com.axel.userservice.repository.UserGroupRepository;
 import com.axel.userservice.repository.UserRepository;
 import com.axel.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +16,25 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    private final UserDtoMapper userDtoMapper;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    UserDtoMapper userDtoMapper;
-
-    @Autowired
-    UserGroupRepository userGroupRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    public UserServiceImpl(UserMapper userMapper,
+                           UserDtoMapper userDtoMapper,
+                           UserRepository userRepository) {
+        this.userMapper = userMapper;
+        this.userDtoMapper = userDtoMapper;
+        this.userRepository = userRepository;
+    }
 
     public List<UserDto> getAll() {
         return userRepository.findAll()
                 .stream()
-                .map(user -> userDtoMapper.map(user))
+                .map(userDtoMapper::map)
                 .collect(Collectors.toList());
     }
 
@@ -48,8 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDto update(UUID uuid, UserDto userDto) {
-        userRepository.findById(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("there is no user with id: " + uuid));
+        if (!userRepository.existsById(uuid)) {
+            throw new EntityNotFoundException("there is no user with id: " + uuid);
+        }
         var updatedUser = userMapper.map(userDto, uuid);
         return userDtoMapper.map(userRepository.save(updatedUser));
     }

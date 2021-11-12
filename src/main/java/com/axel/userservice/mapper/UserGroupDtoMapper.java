@@ -22,14 +22,4 @@ public interface UserGroupDtoMapper {
                 .orElse(null);
     }
 
-//    default UUID mapToUuid(UserGroup userGroup) {
-//        return Optional.ofNullable(userGroup).map(UserGroup::getUuid).orElseGet(this::mapToUuid2);
-////        return userGroup == null ? null : userGroup.getUuid();
-//    }
-//
-//    default UUID mapToUuid2() {
-//        System.out.println("hi");
-//        return null;
-//    }
-
 }

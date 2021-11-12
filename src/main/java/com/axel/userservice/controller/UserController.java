@@ -13,8 +13,12 @@ import java.util.UUID;
 @RestController
 public class UserController implements UserControllerApi {
 
+    private final UserService userService;
+
     @Autowired
-    UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public ResponseEntity<List<UserDto>> getUsers() {

@@ -16,19 +16,25 @@ import java.util.stream.Collectors;
 @Service
 public class UserGroupServiceImpl implements UserGroupService {
 
-    @Autowired
-    UserGroupRepository userGroupRepository;
+    private final UserGroupRepository userGroupRepository;
+
+    private final UserGroupMapper userGroupMapper;
+
+    private final UserGroupDtoMapper userGroupDtoMapper;
 
     @Autowired
-    UserGroupMapper userGroupMapper;
-
-    @Autowired
-    UserGroupDtoMapper userGroupDtoMapper;
+    public UserGroupServiceImpl(UserGroupRepository userGroupRepository,
+                                UserGroupMapper userGroupMapper,
+                                UserGroupDtoMapper userGroupDtoMapper) {
+        this.userGroupRepository = userGroupRepository;
+        this.userGroupMapper = userGroupMapper;
+        this.userGroupDtoMapper = userGroupDtoMapper;
+    }
 
     public List<UserGroupDto> getAll() {
         return userGroupRepository.findAll()
                 .stream()
-                .map(userGroup -> userGroupDtoMapper.map(userGroup))
+                .map(userGroupDtoMapper::map)
                 .collect(Collectors.toList());
     }
 
@@ -44,8 +50,9 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     public UserGroupDto update(UUID uuid, UserGroupDto userGroupDto) {
-        userGroupRepository.findById(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("there is no usergroup with id: " + uuid));
+        if (!userGroupRepository.existsById(uuid)) {
+            throw new EntityNotFoundException("there is no usergroup with id: " + uuid);
+        }
         var updatedUserGroup = userGroupMapper.map(userGroupDto, uuid);
         return userGroupDtoMapper.map(userGroupRepository.save(updatedUserGroup));
     }

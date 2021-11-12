@@ -5,7 +5,6 @@ import package_com.example.userservicetest.model.UserDto;
 import java.util.List;
 import java.util.UUID;
 
-
 public interface UserService {
 
     List<UserDto> getAll();
